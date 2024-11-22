@@ -7,7 +7,7 @@ public class Revision {
     private Vehiculo vehiculo;
     private Empleado empleado;
     private String fechaVencimiento;
-    private int nroObla;
+    private int nroOblea;
     private Medicion medicion;
     private EstadoResultado resultado;
     private DefectoVisual defectoVisual;
@@ -72,12 +72,12 @@ public class Revision {
         this.fechaVencimiento = fechaVencimiento;
     }
 
-    public int getNroObla() {
-        return nroObla;
+    public int getNroOblea() {
+        return nroOblea;
     }
 
-    public void setNroObla(int nroObla) {
-        this.nroObla = nroObla;
+    public void setNroOblea(int nroOblea) {
+        this.nroOblea = nroOblea;
     }
 
     public Medicion getMedicion() {
