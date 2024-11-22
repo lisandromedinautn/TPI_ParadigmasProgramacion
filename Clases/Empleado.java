@@ -1,15 +1,17 @@
 package Clases;
 
-public class Empleado {
+public class Empleado extends Persona {
 
     private int legajo;
     private String rol;
 
     public Empleado() {}
 
-    public Empleado(int legajo, String rol) {
+    public Empleado(int legajo, String rol, String nombre, String apellido, String eMail, int cuil, String domicilio,
+    String telefono, int documento, TipoDocumento tipodocumento) {
         this.legajo = legajo;
         this.rol = rol;
+        super(nombre, apellido, eMail, cuil, domicilio, telefono, documento, tipodocumento);
     }
 
     public void setLegajo(int legajo) {
