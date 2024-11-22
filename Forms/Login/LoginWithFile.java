@@ -1,4 +1,4 @@
-package Login;
+package Forms.Login;
 
 import javax.swing.*;
 import java.awt.*;
