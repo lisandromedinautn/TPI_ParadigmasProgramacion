@@ -3,12 +3,13 @@ package Clases;
 public class EstadoResultado {
   private String nombre;
 
-  public Persona(String nombre) {
+  public EstadoResultado(String nombre) {
       this.nombre = nombre;
   }
-  public String get.Nombre() {
-    retung nombre;
+  public String getNombre() {
+    return nombre;
   }
-  public void set Nombre(String nombre) {
+  public void setNombre(String nombre) {
     this.nombre = nombre;
   }
+}
