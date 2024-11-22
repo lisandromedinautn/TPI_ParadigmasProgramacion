@@ -1,21 +1,21 @@
 package Clases;
 
-public class Cliente {
+public class Cliente extends Persona {
     
-    private int numero_de_cliente;
+    private int numeroCliente;
     private int cuil;
     
     public Cliente() {}
     
-    public Cliente(int numero_de_cliente, int cuil) {
-            this.numero_de_cliente = numero_de_cliente;
+    public Cliente(int numeroCliente, int cuil) {
+            this.numeroCliente = numeroCliente;
             this.cuil = cuil;
         }
-    public void setNumero_de_cliente(int numero_de_cliente) {
-        this.numero_de_cliente = numero_de_cliente;
+    public void setNumeroCliente(int numeroCliente) {
+        this.numeroCliente = numeroCliente;
     }
-    public int getNumero_de_cliente() {
-        return numero_de_cliente;
+    public int getNumeroCliente() {
+        return numeroCliente;
     }
     public int getCuil() {
         return cuil;
