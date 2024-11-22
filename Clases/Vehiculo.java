@@ -1,20 +1,30 @@
 package Clases;
 
+// Clase Vehiculo
+class Vehiculo {
+    
+    private String marca;
+    private String modelo;
+    private String patente;
+    private int numeroChasis;
+    private int añoFabricacion;
+    private int peso;
+    private Cliente cliente;
 
-public class Vehiculo{
+    public Vehiculo() {
+        }
 
-    String marca;
-    String modelo;
-    String patente;
-    int numeroChasis;
-    int añoFabricacion;
-    int peso;
-    Cliente cliente;
-
-    public Vehiculo(String marca, String modelo, String patente, int numeroChasis, int añoFabricacion, int peso, Cliente cliente){
-
+    public Vehiculo(String marca, String modelo, String patente, int numeroChasis, int añoFabricacion, int peso, Cliente cliente) {
+        this.marca = marca;
+        this.modelo = modelo;
+        this.patente = patente;
+        this.numeroChasis = numeroChasis;
+        this.añoFabricacion = añoFabricacion;
+        this.peso = peso;
+        this.cliente = cliente;
     }
 
+    
     public String getMarca() {
         return marca;
     }
@@ -69,6 +79,17 @@ public class Vehiculo{
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
+    }
+    
+    @Override
+    public String toString() {
+        return "Marca: " + marca + "\nModelo: " + modelo + "\nPatente: " + patente +
+                "\nNúmero de Chasis: " + numeroChasis + "\nAño de Fabricación: " + añoFabricacion +
+                "\nPeso: " + peso + " kg\nCliente: " + cliente;
+    }
+
+    public String toCSV() {
+        return marca + "," + modelo + "," + patente + "," + numeroChasis + "," + añoFabricacion + "," + peso + "," + cliente;
     }
 
 }
