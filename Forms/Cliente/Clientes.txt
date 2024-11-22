@@ -1,0 +1,4 @@
+nombre,apellido,documento,tipoDocumento
+Juan,Perez,12345678,DNI
+Maria,Gomez,98765432,PASAPORTE
+Carlos,Rodriguez,11223344,LNC

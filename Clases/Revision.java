@@ -10,7 +10,7 @@ public class Revision {
     private int nroOblea;
     private Medicion medicion;
     private EstadoResultado resultado;
-    private DefectoVisual defectoVisual;
+    private DefectoRevision defectoVisual;
     
 
     public Revision(){
@@ -96,11 +96,11 @@ public class Revision {
         this.resultado = resultado;
     }
 
-    public DefectoVisual getDefectoVisual() {
+    public DefectoRevision getDefectoVisual() {
         return defectoVisual;
     }
 
-    public void setDefectoVisual(DefectoVisual defectoVisual) {
+    public void setDefectoVisual(DefectoRevision defectoVisual) {
         this.defectoVisual = defectoVisual;
     }
 

@@ -1,7 +1,7 @@
 package Clases;
 
 // Clase Vehiculo
-class Vehiculo {
+public class Vehiculo {
     
     private String marca;
     private String modelo;
