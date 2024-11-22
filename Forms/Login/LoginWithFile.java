@@ -1,5 +1,4 @@
 package Forms.Login;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -15,7 +14,7 @@ public class LoginWithFile {
 
     public static void main(String[] args) {
         // Cargar usuarios desde el archivo
-        cargarUsuarios("Login/usuarios.txt");
+        cargarUsuarios("Forms/Login/usuarios.txt");
 
         // Crear el marco principal
         JFrame frame = new JFrame("Login");
