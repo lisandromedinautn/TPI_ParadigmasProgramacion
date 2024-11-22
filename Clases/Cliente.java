@@ -9,10 +9,10 @@ public class Cliente extends Persona{
     
     public Cliente(int numeroCliente, int cuil, String nombre, String apellido, String eMail, String domicilio,
     String telefono, int documento, TipoDocumento tipodocumento) {
-            this.numeroCliente = numeroCliente;
-            this.cuil = cuil;
-            super(nombre, apellido, eMail, domicilio, telefono, documento, tipodocumento);
-        }
+        super(nombre, apellido, eMail, domicilio, telefono, documento, tipodocumento);
+        this.numeroCliente = numeroCliente;
+        this.cuil = cuil;
+    }
     public void setNumeroCliente(int numeroCliente) {
         this.numeroCliente = numeroCliente;
     }

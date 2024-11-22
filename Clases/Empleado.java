@@ -9,9 +9,9 @@ public class Empleado extends Persona {
 
     public Empleado(int legajo, String rol, String nombre, String apellido, String eMail, String domicilio,
     String telefono, int documento, TipoDocumento tipodocumento) {
+        super(nombre, apellido, eMail, domicilio, telefono, documento, tipodocumento);
         this.legajo = legajo;
         this.rol = rol;
-        super(nombre, apellido, eMail, domicilio, telefono, documento, tipodocumento);
     }
     public void setLegajo(int legajo) {
         this.legajo = legajo;
