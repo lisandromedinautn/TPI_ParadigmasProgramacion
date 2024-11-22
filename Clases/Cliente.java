@@ -5,7 +5,7 @@ public class Cliente {
     
     private String nombre;
     private String apellido;
-    private String e_mail;
+    private String eMail;
     private int numero_de_cliente;
     private int cuil;
     private String domicilio;
@@ -16,11 +16,11 @@ public class Cliente {
     public Cliente() {
     }
 
-    public Cliente(String nombre, String apellido, String e_mail, int numero_de_cliente, int cuil, String domicilio,
+    public Cliente(String nombre, String apellido, String eMail, int numero_de_cliente, int cuil, String domicilio,
                 String telefono, int documento, TipoDocumento tipodocumento) {
             this.nombre = nombre;
             this.apellido = apellido;
-            this.e_mail = e_mail;
+            this.eMail = eMail;
             this.numero_de_cliente = numero_de_cliente;
             this.cuil = cuil;
             this.domicilio = domicilio;
@@ -42,11 +42,11 @@ public class Cliente {
     public void setApellido(String apellido) {
         this.apellido = apellido;
     }
-    public String getE_mail() {
-        return e_mail;
+    public String geteMail() {
+        return eMail;
     }
-    public void setE_mail(String e_mail) {
-        this.e_mail = e_mail;
+    public void seteMail(String eMail) {
+        this.eMail = eMail;
     }
     public int getNumero_de_cliente() {
         return numero_de_cliente;
