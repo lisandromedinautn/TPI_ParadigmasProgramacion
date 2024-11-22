@@ -1,0 +1,7 @@
+admin:1234
+lichi:1111
+gino:2222
+ulises:3333
+joaco:4444
+figu:5555
+noah:6666
