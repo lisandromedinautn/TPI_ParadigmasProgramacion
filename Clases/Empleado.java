@@ -13,19 +13,15 @@ public class Empleado extends Persona {
         this.rol = rol;
         super(nombre, apellido, eMail, cuil, domicilio, telefono, documento, tipodocumento);
     }
-
     public void setLegajo(int legajo) {
         this.legajo = legajo;
     }
-
     public int getLegajo() {
         return legajo;
     }
-
     public void setRol(String rol) {
         this.rol = rol;
     }
-
     public String getRol() {
         return rol;
     }
