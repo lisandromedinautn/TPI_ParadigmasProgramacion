@@ -104,6 +104,6 @@ public class Revision {
         this.defectoVisual = defectoVisual;
     }
 
-    
-    
+
+
 }
