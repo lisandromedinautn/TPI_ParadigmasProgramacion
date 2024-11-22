@@ -11,3 +11,4 @@ public class EstadoResultado {
   }
   public void set Nombre(String nombre) {
     this.nombre = nombre;
+  }
