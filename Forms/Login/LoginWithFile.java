@@ -1,4 +1,5 @@
 package Forms.Login;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,8 +13,7 @@ public class LoginWithFile {
 
     private static HashMap<String, String> usuariosPermitidos = new HashMap<>();
 
-    public static void main(String[] args) {
-        // Cargar usuarios desde el archivo
+    public LoginWithFile(Runnable onLoginSuccess) {
         cargarUsuarios("Forms/Login/usuarios.txt");
 
         // Crear el marco principal
@@ -52,9 +52,10 @@ public class LoginWithFile {
                 String username = userField.getText().trim();
                 String password = new String(passwordField.getPassword()).trim();
 
-                // Validar usuario y contraseña
                 if (usuariosPermitidos.containsKey(username) && usuariosPermitidos.get(username).equals(password)) {
                     JOptionPane.showMessageDialog(frame, "¡Inicio de sesión exitoso!");
+                    frame.dispose(); // Cerrar ventana de login
+                    onLoginSuccess.run(); // Ejecutar el callback
                 } else {
                     JOptionPane.showMessageDialog(frame, "Usuario o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -65,18 +66,15 @@ public class LoginWithFile {
         frame.setVisible(true);
     }
 
-    // Método para cargar usuarios desde un archivo
     private static void cargarUsuarios(String archivo) {
         try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
             String linea;
             while ((linea = br.readLine()) != null) {
-                linea = linea.trim(); // Eliminar espacios en blanco
+                linea = linea.trim();
                 if (!linea.isEmpty() && linea.contains(":")) {
                     String[] partes = linea.split(":");
                     if (partes.length == 2) {
-                        String usuario = partes[0].trim();
-                        String contraseña = partes[1].trim();
-                        usuariosPermitidos.put(usuario, contraseña);
+                        usuariosPermitidos.put(partes[0].trim(), partes[1].trim());
                     }
                 }
             }
