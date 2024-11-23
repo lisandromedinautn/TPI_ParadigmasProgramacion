@@ -5,10 +5,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
-import java.util.ArrayList;
 
 import Clases.Cliente;
+import Clases.TipoDocumento;
 import Clases.Vehiculo;
+import Forms.Cliente.ClienteForm;
 
 public class VehiculoForm {
 
@@ -64,64 +65,94 @@ public class VehiculoForm {
     }
 
     // Método para buscar un vehículo por su patente
-   private static Vehiculo buscarVehiculoPorPatente(String patente) {
-    try (BufferedReader br = new BufferedReader(new FileReader(ARCHIVO_VEHICULOS))) {
-        String linea;
-        while ((linea = br.readLine()) != null) {
-            String[] datos = linea.split(",");
-            if (datos.length == 7 && datos[2].trim().equalsIgnoreCase(patente)) {
-                // Crear el cliente utilizando el número de documento
-                int numeroDocumento = Integer.parseInt(datos[6].trim());
-                Cliente cliente = buscarClientePorDocumento(numeroDocumento);
+    private static Vehiculo buscarVehiculoPorPatente(String patente) {
+        try (BufferedReader br = new BufferedReader(new FileReader(ARCHIVO_VEHICULOS))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] datos = linea.split(",");
+                if (datos.length == 7 && datos[2].trim().equalsIgnoreCase(patente)) {
+                    int numeroDocumento = Integer.parseInt(datos[6].trim());
+                    Cliente cliente = buscarClientePorDocumento(numeroDocumento);
 
-                if (cliente != null) {
-                    // Retornar el objeto Vehiculo con el cliente correspondiente
-                    return new Vehiculo(datos[0], datos[1], datos[2], Integer.parseInt(datos[3]),
-                            Integer.parseInt(datos[4]), Integer.parseInt(datos[5]), cliente);
-                } else {
-                    System.out.println("Cliente no encontrado para el documento: " + numeroDocumento);
-                    return null;
+                    if (cliente != null) {
+                        return new Vehiculo(datos[0], datos[1], datos[2], Integer.parseInt(datos[3]),
+                                Integer.parseInt(datos[4]), Integer.parseInt(datos[5]), cliente);
+                    }
                 }
             }
+        } catch (IOException e) {
+            System.out.println("Error al leer el archivo: " + e.getMessage());
         }
-    } catch (IOException e) {
-        System.out.println("Error al leer el archivo: " + e.getMessage());
+        return null;
     }
-    return null;
-}
-private static Cliente buscarClientePorDocumento(int documento) {
-    String archivoClientes = "Forms/Cliente/Clientes.txt";
 
-    try (BufferedReader br = new BufferedReader(new FileReader(archivoClientes))) {
-        String linea;
-        while ((linea = br.readLine()) != null) {
-            String[] datos = linea.split(",");
-            if (datos.length == 4) { // Asegurarse de que el archivo tenga el formato correcto
-                int documentoArchivo = Integer.parseInt(datos[2].trim());
-                if (documentoArchivo == documento) {
-                    // Crear el objeto Cliente con los datos del archivo
-                    //return new Cliente(datos[0], datos[1], documentoArchivo, datos[3].trim());
+    // Método para buscar cliente por documento
+    private static Cliente buscarClientePorDocumento(int documento) {
+        String archivoClientes = "Forms/Cliente/Clientes.txt";
+    
+        try (BufferedReader br = new BufferedReader(new FileReader(archivoClientes))) {
+            String linea;
+            boolean isFirstLine = true; // Salta la cabecera si existe
+            while ((linea = br.readLine()) != null) {
+                if (isFirstLine) {
+                    isFirstLine = false;
+                    continue; // Salta la cabecera
+                }
+    
+                // Ignorar líneas vacías
+                if (linea.trim().isEmpty()) {
+                    continue;
+                }
+    
+                String[] datos = linea.split(",");
+                if (datos.length < 9) {
+                    System.out.println("Línea malformada: " + linea);
+                    continue;
+                }
+    
+                try {
+                    int documentoArchivo = Integer.parseInt(datos[7].trim());
+                    if (documentoArchivo == documento) {
+                        System.out.println(documentoArchivo + documento);
+                        TipoDocumento tipoDocumento = new TipoDocumento(datos[8].trim());
+                        return new Cliente(
+                            Integer.parseInt(datos[0].trim()), // Número Cliente
+                            Integer.parseInt(datos[1].trim()), // CUIL
+                            datos[2].trim(),                  // Nombre
+                            datos[3].trim(),                  // Apellido
+                            datos[4].trim(),                  // Email
+                            datos[5].trim(),                  // Domicilio
+                            datos[6].trim(),                  // Teléfono
+                            documentoArchivo,                 // Documento
+                            tipoDocumento                     // TipoDocumento
+                        );
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Documento inválido en la línea: " + linea);
                 }
             }
+        } catch (IOException e) {
+            System.out.println("Error al leer el archivo de clientes: " + e.getMessage());
         }
-    } catch (IOException e) {
-        System.out.println("Error al leer el archivo de clientes: " + e.getMessage());
+    
+        // Si no se encuentra el cliente, abrir ClienteForm
+        JOptionPane.showMessageDialog(null, "Cliente no encontrado. Procediendo a registrarlo.");
+        new ClienteForm();
+        return null;
     }
 
-    return null; // Cliente no encontrado
-}
     // Método para registrar un nuevo vehículo
     private static void registrarNuevoVehiculo(String patenteInicial) {
         JFrame registroFrame = new JFrame("Registrar Vehículo");
         registroFrame.setSize(600, 500);
         registroFrame.setLayout(null);
-    
+
         JLabel[] etiquetas = {
-            new JLabel("Marca:"), new JLabel("Modelo:"), new JLabel("Patente:"),
-            new JLabel("Número de Chasis:"), new JLabel("Año de Fabricación:"),
-            new JLabel("Peso:"), new JLabel("Número de Documento:"), new JLabel("Tipo de Documento:")
+                new JLabel("Marca:"), new JLabel("Modelo:"), new JLabel("Patente:"),
+                new JLabel("Número de Chasis:"), new JLabel("Año de Fabricación:"),
+                new JLabel("Peso:"), new JLabel("Número de Documento:"), new JLabel("Tipo de Documento:")
         };
-    
+
         JTextField[] campos = new JTextField[7];
         for (int i = 0; i < 7; i++) {
             campos[i] = new JTextField();
@@ -130,19 +161,16 @@ private static Cliente buscarClientePorDocumento(int documento) {
             registroFrame.add(etiquetas[i]);
             registroFrame.add(campos[i]);
         }
-    
-        // Campo de patente
+
         campos[2].setText(patenteInicial);
         campos[2].setEditable(false);
-    
-        // ComboBox para tipo de documento
+
         JComboBox<String> tipoDocumentoComboBox = new JComboBox<>();
         etiquetas[7].setBounds(50, 310, 150, 30);
         tipoDocumentoComboBox.setBounds(220, 310, 200, 30);
         registroFrame.add(etiquetas[7]);
         registroFrame.add(tipoDocumentoComboBox);
-    
-        // Cargar tipos de documento desde el archivo
+
         try (BufferedReader br = new BufferedReader(new FileReader("Forms/Cliente/tipoDocumento.txt"))) {
             String linea;
             while ((linea = br.readLine()) != null) {
@@ -152,50 +180,38 @@ private static Cliente buscarClientePorDocumento(int documento) {
             JOptionPane.showMessageDialog(registroFrame, "Error al cargar tipos de documento: " + e.getMessage(),
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
-    
+
         JButton guardarButton = new JButton("Guardar");
         guardarButton.setBounds(180, 360, 120, 30);
         registroFrame.add(guardarButton);
-    
+
         guardarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    String marca = campos[0].getText().trim();
-                    String modelo = campos[1].getText().trim();
-                    String patente = campos[2].getText().trim();
-                    int numeroChasis = Integer.parseInt(campos[3].getText().trim());
-                    int añoFabricacion = Integer.parseInt(campos[4].getText().trim());
-                    int peso = Integer.parseInt(campos[5].getText().trim());
-                    int documento = Integer.parseInt(campos[6].getText().trim());
                     String tipoDocumento = (String) tipoDocumentoComboBox.getSelectedItem();
-    
-                    // Verificar cliente
+                    int documento = Integer.parseInt(campos[6].getText().trim());
+
                     if (!verificarCliente(documento, tipoDocumento)) {
-                        JOptionPane.showMessageDialog(registroFrame, "Cliente no encontrado en el registro.",
-                                "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(registroFrame, "Cliente no encontrado. Registrando cliente...");
+                        new ClienteForm();
+                        registroFrame.dispose();
                         return;
                     }
-    
-                    // Si el cliente existe, registrar el vehículo
-                    Vehiculo nuevoVehiculo = new Vehiculo(marca, modelo, patente, numeroChasis, añoFabricacion, peso, null);
-                    guardarVehiculoEnArchivo(nuevoVehiculo);
-    
-                    JOptionPane.showMessageDialog(registroFrame, "Vehículo registrado exitosamente.");
-                    registroFrame.dispose();
+
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(registroFrame, "Error al guardar: " + ex.getMessage(),
-                            "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(registroFrame, "Error al registrar vehículo: " + ex.getMessage());
+                    System.out.println(ex.getMessage());
                 }
             }
         });
-    
+
         registroFrame.setVisible(true);
     }
-    
+
     private static boolean verificarCliente(int documento, String tipoDocumento) {
         String archivoClientes = "Forms/Cliente/Clientes.txt";
-    
+
         try (BufferedReader br = new BufferedReader(new FileReader(archivoClientes))) {
             String linea;
             while ((linea = br.readLine()) != null) {
@@ -203,27 +219,16 @@ private static Cliente buscarClientePorDocumento(int documento) {
                 if (datos.length == 4) {
                     int documentoArchivo = Integer.parseInt(datos[2].trim());
                     String tipoDocumentoArchivo = datos[3].trim();
-    
+
                     if (documentoArchivo == documento && tipoDocumentoArchivo.equalsIgnoreCase(tipoDocumento)) {
-                        return true; // Cliente encontrado
+                        return true;
                     }
                 }
             }
         } catch (IOException e) {
             System.out.println("Error al leer el archivo de clientes: " + e.getMessage());
         }
-    
-        return false; // Cliente no encontrado
-    }
-    
-    // Método para guardar un vehículo en el archivo
-    private static void guardarVehiculoEnArchivo(Vehiculo vehiculo) {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(ARCHIVO_VEHICULOS, true))) {
-            bw.write(vehiculo.toCSV());
-            bw.newLine();
-        } catch (IOException e) {
-            System.out.println("Error al guardar el vehículo: " + e.getMessage());
-        }
+
+        return false;
     }
 }
-

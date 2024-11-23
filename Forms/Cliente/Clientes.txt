@@ -1,4 +1,4 @@
-nombre,apellido,documento,tipoDocumento
-Juan,Perez,12345678,DNI
-Maria,Gomez,98765432,PASAPORTE
-Carlos,Rodriguez,11223344,LNC
+NumeroCliente,CUIL,Nombre,Apellido,Email,Domicilio,Telefono,Documento,TipoDocumento
+1,20234567891,Juan,Pérez,juan.perez@email.com,Calle Falsa 123,5551234,12345678,DNI
+2,20345678912,María,González,maria.gonzalez@email.com,Avenida Siempreviva 456,5555678,87654321,PASAPORTE
+3,20456789123,Carlos,Lopez,carlos.lopez@email.com,Calle Los Olivos 789,5559876,11223344,LNC
