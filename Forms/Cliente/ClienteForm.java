@@ -20,51 +20,58 @@ public class ClienteForm extends JFrame {
         setTitle("Registro de Cliente");
         setSize(400, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new GridLayout(10, 2));
+        setLayout(new BorderLayout());
+        JPanel contentPanel = new JPanel(new GridLayout(10, 2, 10, 10));
 
         // Labels and Fields
-        add(new JLabel("Número Cliente:"));
+        contentPanel.add(new JLabel("Número Cliente:"));
         numeroClienteField = new JTextField();
-        add(numeroClienteField);
+        contentPanel.add(numeroClienteField);
 
-        add(new JLabel("CUIL:"));
+        contentPanel.add(new JLabel("CUIL:"));
         cuilField = new JTextField();
-        add(cuilField);
+        contentPanel.add(cuilField);
 
-        add(new JLabel("Nombre:"));
+        contentPanel.add(new JLabel("Nombre:"));
         nombreField = new JTextField();
-        add(nombreField);
+        contentPanel.add(nombreField);
 
-        add(new JLabel("Apellido:"));
+        contentPanel.add(new JLabel("Apellido:"));
         apellidoField = new JTextField();
-        add(apellidoField);
+        contentPanel.add(apellidoField);
 
-        add(new JLabel("Email:"));
+        contentPanel.add(new JLabel("Email:"));
         emailField = new JTextField();
-        add(emailField);
+        contentPanel.add(emailField);
 
-        add(new JLabel("Domicilio:"));
+        contentPanel.add(new JLabel("Domicilio:"));
         domicilioField = new JTextField();
-        add(domicilioField);
+        contentPanel.add(domicilioField);
 
-        add(new JLabel("Teléfono:"));
+        contentPanel.add(new JLabel("Teléfono:"));
         telefonoField = new JTextField();
-        add(telefonoField);
+        contentPanel.add(telefonoField);
 
-        add(new JLabel("Documento:"));
+        contentPanel.add(new JLabel("Documento:"));
         documentoField = new JTextField();
-        add(documentoField);
+        contentPanel.add(documentoField);
 
-        add(new JLabel("Tipo Documento:"));
+        contentPanel.add(new JLabel("Tipo Documento:"));
         tipoDocumentoComboBox = new JComboBox<>(new String[]{"DNI", "PASAPORTE", "LNC", "LIBRETA CIVICA", "LIBRETA DE ENROLAMIENTO"}); // Replace with actual TipoDocumento values
-        add(tipoDocumentoComboBox);
+        contentPanel.add(tipoDocumentoComboBox);
 
         // Buttons
         JButton registrarButton = new JButton("Registrar");
-        add(registrarButton);
+        contentPanel.add(registrarButton);
 
         JButton cancelarButton = new JButton("Cancelar");
-        add(cancelarButton);
+        contentPanel.add(cancelarButton);
+
+        JPanel paddedPanel = new JPanel(new BorderLayout());
+        paddedPanel.setBorder(BorderFactory.createEmptyBorder(25, 25, 25, 25));
+        paddedPanel.add(contentPanel, BorderLayout.CENTER);
+
+        add(paddedPanel, BorderLayout.CENTER);
 
         // Action Listeners
         registrarButton.addActionListener(new ActionListener() {
@@ -80,7 +87,7 @@ public class ClienteForm extends JFrame {
     }
 
     private void toTXT(Cliente cliente){
-        String filepath = "Clientes.txt";
+        String filepath = "Forms/Cliente/Clientes.txt";
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filepath, true))) {
             StringBuilder sb = new StringBuilder();
             sb.append(cliente.getNumeroCliente()).append(",");

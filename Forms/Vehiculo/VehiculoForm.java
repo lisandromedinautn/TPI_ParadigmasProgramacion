@@ -16,7 +16,7 @@ public class VehiculoForm {
     // Ruta del archivo que contiene los vehículos
     private static final String ARCHIVO_VEHICULOS = "Forms/Vehiculo/vehiculos.txt";
 
-    public static void main(String[] args) {
+    public VehiculoForm() {
         // Crear la pantalla principal
         JFrame frame = new JFrame("Buscar Vehículo");
         frame.setSize(400, 200);
@@ -142,7 +142,7 @@ public class VehiculoForm {
     }
 
     // Método para registrar un nuevo vehículo
-    private static void registrarNuevoVehiculo(String patenteInicial) {
+    private void registrarNuevoVehiculo(String patenteInicial) {
         JFrame registroFrame = new JFrame("Registrar Vehículo");
         registroFrame.setSize(600, 500);
         registroFrame.setLayout(null);
@@ -198,6 +198,13 @@ public class VehiculoForm {
                         registroFrame.dispose();
                         return;
                     }
+                    else{
+                        JOptionPane.showMessageDialog(registroFrame, "Vehiculo Registrado con exito");
+                        Cliente cliente;
+                        cliente = buscarClientePorDocumento(documento);
+                        Vehiculo vehiculo = new Vehiculo(campos[0].getText(), campos[1].getText(), campos[2].getText(), Integer.parseInt(campos[3].getText()), Integer.parseInt(campos[4].getText()), Integer.parseInt(campos[5].getText()), cliente);
+                        toTXT(vehiculo);
+                    }
 
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(registroFrame, "Error al registrar vehículo: " + ex.getMessage());
@@ -209,16 +216,30 @@ public class VehiculoForm {
         registroFrame.setVisible(true);
     }
 
+    private void toTXT(Vehiculo vehiculo){
+        String filepath = "Forms/Vehiculo/Vehiculos.txt";
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filepath, true))) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(vehiculo.toCSV());
+            sb.append("\n");
+            writer.write(sb.toString());
+        } catch (IOException e) {
+            //JOptionPane.showMessageDialog(registroFrame, "Error al escribir en el archivo TXT: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+
+        }
+    }
+
     private static boolean verificarCliente(int documento, String tipoDocumento) {
         String archivoClientes = "Forms/Cliente/Clientes.txt";
 
         try (BufferedReader br = new BufferedReader(new FileReader(archivoClientes))) {
             String linea;
+            br.readLine();
             while ((linea = br.readLine()) != null) {
                 String[] datos = linea.split(",");
-                if (datos.length == 4) {
-                    int documentoArchivo = Integer.parseInt(datos[2].trim());
-                    String tipoDocumentoArchivo = datos[3].trim();
+                if (datos.length == 9) {
+                    int documentoArchivo = Integer.parseInt(datos[7].trim());
+                    String tipoDocumentoArchivo = datos[8].trim();
 
                     if (documentoArchivo == documento && tipoDocumentoArchivo.equalsIgnoreCase(tipoDocumento)) {
                         return true;
@@ -231,4 +252,8 @@ public class VehiculoForm {
 
         return false;
     }
+    public static void main(String[] args) {
+        new VehiculoForm();
+    }
+
 }
