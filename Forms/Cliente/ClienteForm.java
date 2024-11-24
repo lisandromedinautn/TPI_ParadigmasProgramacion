@@ -4,31 +4,22 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 import Clases.Cliente;
 import Clases.TipoDocumento;
 
-public class ClienteForm extends JFrame {
+public class ClienteForm extends JDialog {
 
     private JTextField numeroClienteField, cuilField, nombreField, apellidoField, emailField, domicilioField, telefonoField, documentoField;
     private JComboBox<String> tipoDocumentoComboBox;
 
-    public ClienteForm() {
-        setTitle("Registro de Cliente");
+    public ClienteForm(JFrame parent) {
+        super(parent, "Registro de Cliente", true); // Set modal
         setSize(400, 400);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
         JPanel contentPanel = new JPanel(new GridLayout(10, 2, 10, 10));
 
@@ -66,10 +57,20 @@ public class ClienteForm extends JFrame {
         contentPanel.add(documentoField);
 
         contentPanel.add(new JLabel("Tipo Documento:"));
-        tipoDocumentoComboBox = new JComboBox<>(new String[]{"DNI", "PASAPORTE", "LNC", "LIBRETA CIVICA", "LIBRETA DE ENROLAMIENTO"}); // Replace with actual TipoDocumento values
+        tipoDocumentoComboBox = new JComboBox<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader("Forms/Cliente/tipoDocumento.txt"))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                tipoDocumentoComboBox.addItem(linea.trim());
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar tipos de documento: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
         contentPanel.add(tipoDocumentoComboBox);
 
-        // Buttons
         JButton registrarButton = new JButton("Registrar");
         contentPanel.add(registrarButton);
 
@@ -82,11 +83,11 @@ public class ClienteForm extends JFrame {
 
         add(paddedPanel, BorderLayout.CENTER);
 
-        // Action Listeners
         registrarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 registrarCliente();
+                cancelarButton.doClick();
             }
         });
 
@@ -115,7 +116,6 @@ public class ClienteForm extends JFrame {
 
     }
 
-
     }
 
     private void registrarCliente() {
@@ -135,13 +135,10 @@ public class ClienteForm extends JFrame {
             toTXT(cliente);
 
             JOptionPane.showMessageDialog(this, "Cliente registrado exitosamente:\n" + cliente.toString());
-
+            dispose();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Error al registrar cliente: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    public static void main(String[] args) {
-        new ClienteForm();
-    }
 }

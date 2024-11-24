@@ -20,85 +20,96 @@ import Clases.TipoDocumento;
 import Clases.Vehiculo;
 import Forms.Cliente.ClienteForm;
 
-public class VehiculoForm {
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
 
-    // Ruta del archivo que contiene los vehículos
-    private static final String ARCHIVO_VEHICULOS = "Forms/Vehiculo/vehiculos.txt";
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
+
+public class VehiculoForm extends JFrame {
+
+    private JTextField marcaField, modeloField, patenteField, nroChasisField, añoFabricacionField, pesoField, documentoField;
+    private JComboBox<String> tipoDocumentoComboBox;
 
     public VehiculoForm() {
-        // Crear la pantalla principal
-        JFrame frame = new JFrame("Buscar Vehículo");
-        frame.setSize(400, 200);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(null);
+        setTitle("Registro de Vehiculo");
+        setSize(400, 400);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new BorderLayout());
+        JPanel contentPanel = new JPanel(new GridLayout(10, 2, 10, 10));
 
-        // Etiqueta y campo de búsqueda
-        JLabel patenteLabel = new JLabel("Ingrese la patente:");
-        patenteLabel.setBounds(50, 30, 150, 30);
-        frame.add(patenteLabel);
+        // Labels and Fields
+        contentPanel.add(new JLabel("Marca:"));
+        marcaField = new JTextField();
+        contentPanel.add(marcaField);
 
-        JTextField patenteField = new JTextField();
-        patenteField.setBounds(200, 30, 150, 30);
-        frame.add(patenteField);
+        contentPanel.add(new JLabel("Modelo:"));
+        modeloField = new JTextField();
+        contentPanel.add(modeloField);
 
-        // Botón de buscar
-        JButton buscarButton = new JButton("Buscar");
-        buscarButton.setBounds(150, 80, 100, 30);
-        frame.add(buscarButton);
+        contentPanel.add(new JLabel("Patente:"));
+        patenteField = new JTextField();
+        contentPanel.add(patenteField);
 
-        // Acción al buscar
-        buscarButton.addActionListener(new ActionListener() {
+        contentPanel.add(new JLabel("nroChasis:"));
+        nroChasisField = new JTextField();
+        contentPanel.add(nroChasisField);
+
+        contentPanel.add(new JLabel("Año de fabricacion:"));
+        añoFabricacionField = new JTextField();
+        contentPanel.add(añoFabricacionField);
+
+        contentPanel.add(new JLabel("Peso:"));
+        pesoField = new JTextField();
+        contentPanel.add(pesoField);
+
+        contentPanel.add(new JLabel("Documento:"));
+        documentoField = new JTextField();
+        contentPanel.add(documentoField);
+
+        contentPanel.add(new JLabel("Tipo Documento:"));
+        tipoDocumentoComboBox = new JComboBox<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader("Forms/Cliente/tipoDocumento.txt"))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                tipoDocumentoComboBox.addItem(linea.trim());
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar tipos de documento: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        contentPanel.add(tipoDocumentoComboBox);
+
+        JButton registrarButton = new JButton("Registrar");
+        contentPanel.add(registrarButton);
+
+        JButton cancelarButton = new JButton("Cancelar");
+        contentPanel.add(cancelarButton);
+
+        JPanel paddedPanel = new JPanel(new BorderLayout());
+        paddedPanel.setBorder(BorderFactory.createEmptyBorder(25, 25, 25, 25));
+        paddedPanel.add(contentPanel, BorderLayout.CENTER);
+
+        add(paddedPanel, BorderLayout.CENTER);
+
+        // Action Listeners
+        registrarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String patente = patenteField.getText().trim().toUpperCase();
-                if (patente.isEmpty()) {
-                    JOptionPane.showMessageDialog(frame, "Por favor, ingrese una patente válida.");
-                    return;
-                }
-
-                // Buscar vehículo
-                Vehiculo vehiculo = buscarVehiculoPorPatente(patente);
-                if (vehiculo != null) {
-                    // Mostrar información del vehículo
-                    JOptionPane.showMessageDialog(frame, vehiculo.toString(), "Información del Vehículo",
-                            JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    // Abrir pantalla para registrar un nuevo vehículo
-                    registrarNuevoVehiculo(patente);
-                }
+                registrarVehiculo();
             }
         });
 
-        // Mostrar la pantalla principal
-        frame.setVisible(true);
+        cancelarButton.addActionListener(e -> dispose());
+
+        setVisible(true);
     }
 
-    // Método para buscar un vehículo por su patente
-    private static Vehiculo buscarVehiculoPorPatente(String patente) {
-        try (BufferedReader br = new BufferedReader(new FileReader(ARCHIVO_VEHICULOS))) {
-            String linea = br.readLine();
-            while ((linea = br.readLine()) != null) {
-                String[] datos = linea.split(",");
-                if (datos.length == 7 && datos[2].trim().equalsIgnoreCase(patente)) {
-                    int numeroDocumento = Integer.parseInt(datos[6].trim());
-                    Cliente cliente = buscarClientePorDocumento(numeroDocumento);
-
-                    if (cliente != null) {
-                        return new Vehiculo(datos[0], datos[1], datos[2], datos[3],
-                                Integer.parseInt(datos[4]), Integer.parseInt(datos[5]), cliente);
-                    }
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("Error al leer el archivo: " + e.getMessage());
-        }
-        return null;
-    }
-
-    // Método para buscar cliente por documento
-    private static Cliente buscarClientePorDocumento(int documento) {
+    public Cliente buscarClientePorDocumento(int documento) {
         String archivoClientes = "Forms/Cliente/Clientes.txt";
-    
+
         try (BufferedReader br = new BufferedReader(new FileReader(archivoClientes))) {
             String linea;
             boolean isFirstLine = true; // Salta la cabecera si existe
@@ -107,33 +118,33 @@ public class VehiculoForm {
                     isFirstLine = false;
                     continue; // Salta la cabecera
                 }
-    
+
                 // Ignorar líneas vacías
                 if (linea.trim().isEmpty()) {
                     continue;
                 }
-    
+
                 String[] datos = linea.split(",");
                 if (datos.length < 9) {
                     System.out.println("Línea malformada: " + linea);
                     continue;
                 }
-    
+
                 try {
                     int documentoArchivo = Integer.parseInt(datos[7].trim());
                     if (documentoArchivo == documento) {
                         System.out.println(documentoArchivo + documento);
                         TipoDocumento tipoDocumento = new TipoDocumento(datos[8].trim());
                         return new Cliente(
-                            Integer.parseInt(datos[0].trim()), // Número Cliente
-                            Long.parseLong(datos[1].trim()), // CUIL
-                            datos[2].trim(),                  // Nombre
-                            datos[3].trim(),                  // Apellido
-                            datos[4].trim(),                  // Email
-                            datos[5].trim(),                  // Domicilio
-                            datos[6].trim(),                  // Teléfono
-                            documentoArchivo,                 // Documento
-                            tipoDocumento                     // TipoDocumento
+                                Integer.parseInt(datos[0].trim()), // Número Cliente
+                                Long.parseLong(datos[1].trim()), // CUIL
+                                datos[2].trim(),                  // Nombre
+                                datos[3].trim(),                  // Apellido
+                                datos[4].trim(),                  // Email
+                                datos[5].trim(),                  // Domicilio
+                                datos[6].trim(),                  // Teléfono
+                                documentoArchivo,                 // Documento
+                                tipoDocumento                     // TipoDocumento
                         );
                     }
                 } catch (NumberFormatException e) {
@@ -143,126 +154,59 @@ public class VehiculoForm {
         } catch (IOException e) {
             System.out.println("Error al leer el archivo de clientes: " + e.getMessage());
         }
-    
+
         // Si no se encuentra el cliente, abrir ClienteForm
         JOptionPane.showMessageDialog(null, "Cliente no encontrado. Procediendo a registrarlo.");
-        new ClienteForm();
-        return null;
-    }
-
-    // Método para registrar un nuevo vehículo
-    private void registrarNuevoVehiculo(String patenteInicial) {
-        JFrame registroFrame = new JFrame("Registrar Vehículo");
-        registroFrame.setSize(600, 500);
-        registroFrame.setLayout(null);
-
-        JLabel[] etiquetas = {
-                new JLabel("Marca:"), new JLabel("Modelo:"), new JLabel("Patente:"),
-                new JLabel("Número de Chasis:"), new JLabel("Año de Fabricación:"),
-                new JLabel("Peso:"), new JLabel("Número de Documento:"), new JLabel("Tipo de Documento:")
-        };
-
-        JTextField[] campos = new JTextField[7];
-        for (int i = 0; i < 7; i++) {
-            campos[i] = new JTextField();
-            etiquetas[i].setBounds(50, 30 + (i * 40), 150, 30);
-            campos[i].setBounds(220, 30 + (i * 40), 200, 30);
-            registroFrame.add(etiquetas[i]);
-            registroFrame.add(campos[i]);
-        }
-
-        campos[2].setText(patenteInicial);
-        campos[2].setEditable(false);
-
-        JComboBox<String> tipoDocumentoComboBox = new JComboBox<>();
-        etiquetas[7].setBounds(50, 310, 150, 30);
-        tipoDocumentoComboBox.setBounds(220, 310, 200, 30);
-        registroFrame.add(etiquetas[7]);
-        registroFrame.add(tipoDocumentoComboBox);
-
-        try (BufferedReader br = new BufferedReader(new FileReader("Forms/Cliente/tipoDocumento.txt"))) {
-            String linea;
-            while ((linea = br.readLine()) != null) {
-                tipoDocumentoComboBox.addItem(linea.trim());
-            }
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(registroFrame, "Error al cargar tipos de documento: " + e.getMessage(),
-                    "Error", JOptionPane.ERROR_MESSAGE);
-        }
-
-        JButton guardarButton = new JButton("Guardar");
-        guardarButton.setBounds(180, 360, 120, 30);
-        registroFrame.add(guardarButton);
-
-        guardarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    String tipoDocumento = (String) tipoDocumentoComboBox.getSelectedItem();
-                    int documento = Integer.parseInt(campos[6].getText().trim());
-
-                    if (!verificarCliente(documento, tipoDocumento)) {
-                        JOptionPane.showMessageDialog(registroFrame, "Cliente no encontrado. Registrando cliente...");
-                        new ClienteForm();
-                        registroFrame.dispose();
-                        return;
-                    }
-                    else{
-                        JOptionPane.showMessageDialog(registroFrame, "Vehiculo Registrado con exito");
-                        Cliente cliente;
-                        cliente = buscarClientePorDocumento(documento);
-                        Vehiculo vehiculo = new Vehiculo(campos[0].getText(), campos[1].getText(), campos[2].getText(), campos[3].getText(), Integer.parseInt(campos[4].getText()), Integer.parseInt(campos[5].getText()), cliente);
-                        toTXT(vehiculo);
-                    }
-
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(registroFrame, "Error al registrar vehículo: " + ex.getMessage());
-                    System.out.println(ex.getMessage());
-                }
-            }
-        });
-
-        registroFrame.setVisible(true);
+        ClienteForm clienteForm = new ClienteForm(this);
+        clienteForm.setVisible(true);
+        return buscarClientePorDocumento(documento);
     }
 
     private void toTXT(Vehiculo vehiculo){
         String filepath = "Forms/Vehiculo/Vehiculos.txt";
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filepath, true))) {
             StringBuilder sb = new StringBuilder();
-            sb.append(vehiculo.toCSV());
+            sb.append(vehiculo.getMarca()).append(",");
+            sb.append(vehiculo.getModelo()).append(",");
+            sb.append(vehiculo.getPatente()).append(",");
+            sb.append(vehiculo.getNumeroChasis()).append(",");
+            sb.append(vehiculo.getAñoFabricacion()).append(",");
+            sb.append(vehiculo.getPeso()).append(",");
+            sb.append(vehiculo.getCliente().getDocumento());
             sb.append("\n");
             writer.write(sb.toString());
         } catch (IOException e) {
-            //JOptionPane.showMessageDialog(registroFrame, "Error al escribir en el archivo TXT: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error al escribir en el archivo TXT: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 
+        }
+
+
+    }
+
+    private void registrarVehiculo() {
+        try {
+            String marca = marcaField.getText();
+            String modelo = modeloField.getText();
+            String patente = patenteField.getText();
+            String nroChasis = nroChasisField.getText();
+            int añoFabricacion = Integer.parseInt(añoFabricacionField.getText());
+            int peso = Integer.parseInt(pesoField.getText());
+            int documento = Integer.parseInt(documentoField.getText());
+
+            Cliente cliente = buscarClientePorDocumento(documento);
+
+            Vehiculo vehiculo = new Vehiculo(marca, modelo, patente, nroChasis, añoFabricacion, peso, cliente);
+            toTXT(vehiculo);
+
+            JOptionPane.showMessageDialog(this, "Vehiculo registrado exitosamente:\n");
+            dispose();
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error al registrar vehiculo: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    private static boolean verificarCliente(int documento, String tipoDocumento) {
-        String archivoClientes = "Forms/Cliente/Clientes.txt";
-
-        try (BufferedReader br = new BufferedReader(new FileReader(archivoClientes))) {
-            String linea;
-            br.readLine();
-            while ((linea = br.readLine()) != null) {
-                String[] datos = linea.split(",");
-                if (datos.length == 9) {
-                    int documentoArchivo = Integer.parseInt(datos[7].trim());
-                    String tipoDocumentoArchivo = datos[8].trim();
-
-                    if (documentoArchivo == documento && tipoDocumentoArchivo.equalsIgnoreCase(tipoDocumento)) {
-                        return true;
-                    }
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("Error al leer el archivo de clientes: " + e.getMessage());
-        }
-
-        return false;
-    }
     public static void main(String[] args) {
         new VehiculoForm();
     }
-
 }
