@@ -1,10 +1,19 @@
 package Forms.Vehiculo;
 
-import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 import Clases.Cliente;
 import Clases.TipoDocumento;
@@ -67,7 +76,7 @@ public class VehiculoForm {
     // Método para buscar un vehículo por su patente
     private static Vehiculo buscarVehiculoPorPatente(String patente) {
         try (BufferedReader br = new BufferedReader(new FileReader(ARCHIVO_VEHICULOS))) {
-            String linea;
+            String linea = br.readLine();
             while ((linea = br.readLine()) != null) {
                 String[] datos = linea.split(",");
                 if (datos.length == 7 && datos[2].trim().equalsIgnoreCase(patente)) {
@@ -75,7 +84,7 @@ public class VehiculoForm {
                     Cliente cliente = buscarClientePorDocumento(numeroDocumento);
 
                     if (cliente != null) {
-                        return new Vehiculo(datos[0], datos[1], datos[2], Integer.parseInt(datos[3]),
+                        return new Vehiculo(datos[0], datos[1], datos[2], datos[3],
                                 Integer.parseInt(datos[4]), Integer.parseInt(datos[5]), cliente);
                     }
                 }
@@ -117,7 +126,7 @@ public class VehiculoForm {
                         TipoDocumento tipoDocumento = new TipoDocumento(datos[8].trim());
                         return new Cliente(
                             Integer.parseInt(datos[0].trim()), // Número Cliente
-                            Integer.parseInt(datos[1].trim()), // CUIL
+                            Long.parseLong(datos[1].trim()), // CUIL
                             datos[2].trim(),                  // Nombre
                             datos[3].trim(),                  // Apellido
                             datos[4].trim(),                  // Email
@@ -202,7 +211,7 @@ public class VehiculoForm {
                         JOptionPane.showMessageDialog(registroFrame, "Vehiculo Registrado con exito");
                         Cliente cliente;
                         cliente = buscarClientePorDocumento(documento);
-                        Vehiculo vehiculo = new Vehiculo(campos[0].getText(), campos[1].getText(), campos[2].getText(), Integer.parseInt(campos[3].getText()), Integer.parseInt(campos[4].getText()), Integer.parseInt(campos[5].getText()), cliente);
+                        Vehiculo vehiculo = new Vehiculo(campos[0].getText(), campos[1].getText(), campos[2].getText(), campos[3].getText(), Integer.parseInt(campos[4].getText()), Integer.parseInt(campos[5].getText()), cliente);
                         toTXT(vehiculo);
                     }
 

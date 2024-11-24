@@ -2,4 +2,6 @@ NumeroCliente,CUIL,Nombre,Apellido,Email,Domicilio,Telefono,Documento,TipoDocume
 1,20234567891,Juan,Pérez,juan.perez@email.com,Calle Falsa 123,5551234,12345678,DNI
 2,20345678912,María,González,maria.gonzalez@email.com,Avenida Siempreviva 456,5555678,87654321,PASAPORTE
 3,20456789123,Carlos,Lopez,carlos.lopez@email.com,Calle Los Olivos 789,5559876,11223344,LNC
-4,1231231,PRUEBA,PRUEBA,SADASDS,SADAS2,121321,12312,DNI
+5,12,Valeria,Ortiz,pedazodeputa@gmail.com,El puterio 123,546484654,72444846,DNI
+9,12,Alberto,Salazar,47424712@gmail.com,Casares 123,4564621354,47424712,DNI
+10,20462224126,Gino,Scursatone,scursatonegino@gmail.com,Rio Salado 163,3534282506,46222412,DNI

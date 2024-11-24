@@ -6,7 +6,7 @@ public class Vehiculo {
     private String marca;
     private String modelo;
     private String patente;
-    private int numeroChasis;
+    private String numeroChasis;
     private int añoFabricacion;
     private int peso;
     private Cliente cliente;
@@ -14,7 +14,7 @@ public class Vehiculo {
     public Vehiculo() {
         }
 
-    public Vehiculo(String marca, String modelo, String patente, int numeroChasis, int añoFabricacion, int peso, Cliente cliente) {
+    public Vehiculo(String marca, String modelo, String patente, String numeroChasis, int añoFabricacion, int peso, Cliente cliente) {
         this.marca = marca;
         this.modelo = modelo;
         this.patente = patente;
@@ -49,11 +49,11 @@ public class Vehiculo {
         this.patente = patente;
     }
 
-    public int getNumeroChasis() {
+    public String getNumeroChasis() {
         return numeroChasis;
     }
 
-    public void setNumeroChasis(int numeroChasis) {
+    public void setNumeroChasis(String numeroChasis) {
         this.numeroChasis = numeroChasis;
     }
 
@@ -89,7 +89,7 @@ public class Vehiculo {
     }
 
     public String toCSV() {
-        return marca + "," + modelo + "," + patente + "," + numeroChasis + "," + añoFabricacion + "," + peso + "," + cliente;
+        return "\n" + marca + "," + modelo + "," + patente + "," + numeroChasis + "," + añoFabricacion + "," + peso + "," + cliente.getDocumento();
     }
 
 }

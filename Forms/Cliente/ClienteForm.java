@@ -1,15 +1,24 @@
 package Forms.Cliente;
 
-import Clases.Cliente;
-import Clases.TipoDocumento;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import Clases.Cliente;
+import Clases.TipoDocumento;
 
 public class ClienteForm extends JFrame {
 
@@ -112,7 +121,7 @@ public class ClienteForm extends JFrame {
     private void registrarCliente() {
         try {
             int numeroCliente = Integer.parseInt(numeroClienteField.getText());
-            int cuil = Integer.parseInt(cuilField.getText());
+            Long cuil = Long.parseLong(cuilField.getText());
             String nombre = nombreField.getText();
             String apellido = apellidoField.getText();
             String email = emailField.getText();
