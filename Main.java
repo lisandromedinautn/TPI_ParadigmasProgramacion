@@ -1,7 +1,8 @@
-import Forms.MainForm.MainForm;
-import Forms.Login.LoginWithFile;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
-import javax.swing.*;
+import Forms.Login.LoginWithFile;
+import Forms.MainForm.MainForm;
 
 public class Main extends JFrame {
     public static void main(String[] args) {
