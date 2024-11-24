@@ -92,8 +92,6 @@ public class ClienteForm extends JDialog {
         });
 
         cancelarButton.addActionListener(e -> dispose());
-
-        setVisible(true);
     }
 
     private void toTXT(Cliente cliente){

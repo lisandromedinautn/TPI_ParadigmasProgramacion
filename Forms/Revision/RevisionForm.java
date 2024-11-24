@@ -177,7 +177,7 @@ public class RevisionForm {
 
         // Si no se encuentra el cliente, abrir ClienteForm
         JOptionPane.showMessageDialog(null, "Cliente no encontrado. Procediendo a registrarlo.");
-        new ClienteForm();
+        //new ClienteForm();
         return null;
     }
 
