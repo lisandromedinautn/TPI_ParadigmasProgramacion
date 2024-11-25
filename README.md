@@ -4,3 +4,5 @@
 [ ] Unir los forms de Vehiculo y Cliente en caso de que el cliente no esté registrado
 [ ] Si se encuentra el la patente al inicio que te lleve a registrar revisión
 [ ] Luego de registrar el cliente que te lleve a Registrar Revisión
+[ ] Cerrar  Pestaña de Cliente cuadno se registra
+[ ] Mostrar pantalla vehículo registrado
