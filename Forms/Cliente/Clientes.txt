@@ -1,23 +1,2 @@
 NumeroCliente,CUIL,Nombre,Apellido,Email,Domicilio,Telefono,Documento,TipoDocumento
-1,20234567891,Juan,Pérez,juan.perez@email.com,Calle Falsa 123,5551234,12345678,DNI
-2,20345678912,María,González,maria.gonzalez@email.com,Avenida Siempreviva 456,5555678,87654321,PASAPORTE
-3,20456789123,Carlos,Lopez,carlos.lopez@email.com,Calle Los Olivos 789,5559876,11223344,LNC
-5,12,Valeria,Ortiz,pedazodeputa@gmail.com,El puterio 123,546484654,72444846,DNI
-9,12,Alberto,Salazar,47424712@gmail.com,Casares 123,4564621354,47424712,DNI
-10,20462224126,Gino,Scursatone,scursatonegino@gmail.com,Rio Salado 163,3534282506,46222412,DNI
-12321,1232132,sadasd,sadas,sadasd,asdas,12312,12312,DNI
-123,1231213,sdfsdf,sdafa,asfasd,asdas,212312,12312313,DNI
-123,1231213,sdfsdf,sdafa,asfasd,asdas,212312,12312313,DNI
-12323,123123,asdaskjlh,asdwas,asdasad,asdsa,123123,567567,DNI
-9806,54654676,prueba1,apellido1,emial1,asdas12,123213,1111,DNI
-90123,123213321,dsrfdsf,dsfds,dsfsd,sdf,12312,2222,DNI
-768678,45654645,uighjhg,fghgf,fghgfd,dfgdf,5643434,4444,DNI
-768678,45654645,uighjhg,fghgf,fghgfd,dfgdf,5643434,4444,DNI
-13231,123123,dfs,asdfa,asdsad,asds213,21312,5555,DNI
-123,1232412,dsfds,asfdas,asdasd,asdas,21312,6666,DNI
-122312,21312,dfds,sdfsd,sdfsd,sdf,123123,7777,DNI
-65674,41221,sdfsd,sdf,sdfsd,dsfd,123,8888,DNI
-1231,21321,aslkdj,asdsa,sda,sadas,12312,99991,DNI
-12312,1231212,zxsd,prueba9,prueba9,prueba9,prueba9,6631,DNI
-2312,1233,prueba9,prueba9,prueba9,prueba9,21312,8874,DNI
-123432,12423,prueba5,prueba5,prueba5,prueba5,prueba5,7765,DNI
+9999,1234567,JUAN,PEREZ,JUANPEREZ@GMAIL.COM,SANJUAN1999,3534445678,123456,DNI

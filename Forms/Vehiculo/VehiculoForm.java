@@ -166,6 +166,7 @@ public class VehiculoForm extends JFrame {
         String filepath = "Forms/Vehiculo/Vehiculos.txt";
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filepath, true))) {
             StringBuilder sb = new StringBuilder();
+            sb.append("\n");
             sb.append(vehiculo.getMarca()).append(",");
             sb.append(vehiculo.getModelo()).append(",");
             sb.append(vehiculo.getPatente()).append(",");
@@ -173,7 +174,6 @@ public class VehiculoForm extends JFrame {
             sb.append(vehiculo.getAñoFabricacion()).append(",");
             sb.append(vehiculo.getPeso()).append(",");
             sb.append(vehiculo.getCliente().getDocumento());
-            sb.append("\n");
             writer.write(sb.toString());
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this, "Error al escribir en el archivo TXT: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
